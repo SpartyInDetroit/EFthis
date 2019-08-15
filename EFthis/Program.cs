@@ -21,6 +21,7 @@ namespace EFthis
             if (string.IsNullOrWhiteSpace(options.ConnectionString))
             {
                 Console.WriteLine("Connection string or YAML input required");
+                return;
             }
 
             BuildSingleEntity(options.ConnectionString, options.Table, options.Schema, options.Output);
