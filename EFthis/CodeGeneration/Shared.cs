@@ -7,55 +7,56 @@ namespace EFthis.CodeGeneration
     public static class Shared
     {
         public static readonly Dictionary<string, string> DataMap = new Dictionary<string, string>
-    {
-        { "bigint", "long" }
-        ,{ "bit", "bool" }
-        ,{ "char", "string" }
-        ,{ "nchar", "string" }
-        ,{ "date", "DateTime" }
-        ,{ "datetime", "DateTime" }
-        ,{ "datetime2", "DateTime" }
-        ,{ "decimal", "decimal" }
-        ,{ "float", "decimal" }
-        ,{ "hierarchyid", "NotSupported" }
-        ,{ "int", "int" }
-        ,{ "money", "decimal" }
-        ,{ "numeric", "decimal" }
-        ,{ "nvarchar", "string" }
-        ,{ "smallint", "short" }
-        ,{ "time", "TimeSpan" }
-        ,{ "uniqueidentifier", "Guid" }
-        ,{ "varbinary", "byte[]" }
-        ,{ "varchar", "string" }
-        ,{ "xml", "string" }
-    };
+        {
+            { "bigint", "long" }
+            ,{ "bit", "bool" }
+            ,{ "char", "string" }
+            ,{ "nchar", "string" }
+            ,{ "date", "DateTime" }
+            ,{ "datetime", "DateTime" }
+            ,{ "datetime2", "DateTime" }
+            ,{ "decimal", "decimal" }
+            ,{ "float", "decimal" }
+            ,{ "hierarchyid", "NotSupported" }
+            ,{ "int", "int" }
+            ,{ "money", "decimal" }
+            ,{ "numeric", "decimal" }
+            ,{ "nvarchar", "string" }
+            ,{ "smallint", "short" }
+            ,{ "time", "TimeSpan" }
+            ,{ "uniqueidentifier", "Guid" }
+            ,{ "varbinary", "byte[]" }
+            ,{ "varchar", "string" }
+            ,{ "xml", "string" }
+            ,{ "tinyint", "byte" }
+        };
 
         public static readonly HashSet<string> NonNullableMap = new HashSet<string>
-    {
-        "bigint"
-        , "bit"
-        , "date"
-        , "datetime"
-        , "datetime2"
-        , "decimal"
-        , "float"
-        , "int"
-        , "money"
-        , "numeric"
-        , "smallint"
-        , "time"
-        , "uniqueidentifier"
-    };
+        {
+            "bigint"
+            , "bit"
+            , "date"
+            , "datetime"
+            , "datetime2"
+            , "decimal"
+            , "float"
+            , "int"
+            , "money"
+            , "numeric"
+            , "smallint"
+            , "time"
+            , "uniqueidentifier"
+        };
 
         public static readonly HashSet<string> NullableMap = new HashSet<string>
-    {
-        "char"
-        , "nchar"
-        , "nvarchar"
-        , "varbinary"
-        , "varchar"
-        , "xml"
-    };
+        {
+            "char"
+            , "nchar"
+            , "nvarchar"
+            , "varbinary"
+            , "varchar"
+            , "xml"
+        };
 
 
         public static string NameSanitize(string name)

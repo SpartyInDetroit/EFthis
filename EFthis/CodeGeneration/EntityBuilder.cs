@@ -12,34 +12,11 @@ namespace EFthis.CodeGeneration
             var sb = new StringBuilder($"\t[Table(\"{tableName}\", Schema = \"{schema}\")]\r\n");
             sb.Append($"\tpublic class {Shared.NameSanitize(tableName)}\r\n\t{{\r\n");
 
-            properties = properties
-                .OrderBy(x => !x.IsKey)
-                .ThenBy(x => x.ColumnName)
-                .ToList();
-
-            var recordingProperties = new List<TableProperty>();
-
             bool firstProp = true;
             foreach (var prop in properties)
             {
-                if (prop.ColumnName.StartsWith("Create") || prop.ColumnName.StartsWith("Modif"))
-                {
-                    recordingProperties.Add(prop);
-                    continue;
-                }
-
                 WriteProperty(sb, prop, properties, firstProp);
                 firstProp = false;
-            }
-
-            if (recordingProperties.Any())
-            {
-                sb.Append("\r\n\t\t// Start Recording Properties\r\n");
-                foreach (var property in recordingProperties)
-                {
-                    WriteProperty(sb, property, properties, firstProp);
-                }
-                sb.Append("\t\t// End Recording Properties\r\n");
             }
 
             var navProperties = properties
@@ -127,14 +104,14 @@ namespace EFthis.CodeGeneration
         private class AttrMetaDataBuilder
         {
             private static readonly HashSet<string> UnicodeTypes = new HashSet<string>
-        {
-            "nvarchar", "nchar"
-        };
+            {
+                "nvarchar", "nchar"
+            };
 
             private static readonly HashSet<string> MinLengthTypes = new HashSet<string>
-        {
-            "char", "nchar"
-        };
+            {
+                "char", "nchar"
+            };
 
             public static ICollection<AttrMetaData> GetPropertyAttributes(TableProperty prop, ICollection<TableProperty> properties)
             {
@@ -194,20 +171,20 @@ namespace EFthis.CodeGeneration
             }
 
             private static readonly HashSet<string> StringTypes = new HashSet<string>
-        {
-            "char"
-            , "varchar"
-            , "nchar"
-            , "nvarchar"
-            , "varbinary"
-        };
+            {
+                "char"
+                , "varchar"
+                , "nchar"
+                , "nvarchar"
+                , "varbinary"
+            };
 
 
             private static readonly HashSet<string> NumericTypes = new HashSet<string>
-        {
-            "numeric"
-            , "decimal"
-        };
+            {
+                "numeric"
+                , "decimal"
+            };
 
             private static ICollection<AttrMetaData> DataType(TableProperty prop, ICollection<TableProperty> properties)
             {
