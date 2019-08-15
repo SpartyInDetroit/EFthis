@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Data;
 using System.Data.SqlClient;
+using CommandLine;
 using EFthis.CodeGeneration;
 
 namespace EFthis
@@ -9,21 +9,44 @@ namespace EFthis
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Begin generating entities");
+            Parser.Default.ParseArguments<Options>(args)
+                .WithParsed(options =>
+                {
+                    ControlFlow(options);
+                });
+        }
 
-            var connectionString = ""; // INSERT CONNECTION STRING HERE
+        private static void ControlFlow(Options options)
+        {
+            if (string.IsNullOrWhiteSpace(options.ConnectionString))
+            {
+                Console.WriteLine("Connection string or YAML input required");
+                return;
+            }
 
-            IDbConnection connection = new SqlConnection(connectionString);
+            BuildSingleEntity(options.ConnectionString, options.Table, options.Schema, options.Output);
+        }
 
-            var table = "AppUser"; // Fill in table name
-            var schema = "dbo";
-            var tableMetaData = new TableMetaDataBuilder(connection);
-            var tableProperties = tableMetaData.GetProperties(table, schema);
+        private static void BuildSingleEntity(string connectionString, string table, string schema, bool output)
+        {
+            if (output)
+            {
+                Console.WriteLine("Output to directory not implemented yet");
+            }
 
-            // Build Entity
-            var result = EntityBuilder.BuildEntity(table, schema, tableProperties);
+            try
+            {
+                var connection = new SqlConnection(connectionString);
+                var tableMetadata = new TableMetaDataBuilder(connection);
+                var tableProperties = tableMetadata.GetProperties(table, schema);
+                var entity = EntityBuilder.BuildEntity(table, schema, tableProperties);
 
-            Console.Write(result);
+                Console.Write(entity);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Something went wrong:{Environment.NewLine}{e}");
+            }
         }
     }
 }
