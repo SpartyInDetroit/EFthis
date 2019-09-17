@@ -1,5 +1,4 @@
-﻿using System;
-using CommandLine;
+﻿using CommandLine;
 
 namespace EFthis
 {
@@ -16,5 +15,8 @@ namespace EFthis
 
         [Option('o', "output", Required = false, Default = false, HelpText = "Output directory, required if using YAML input")]
         public bool Output { get; set; }
+
+        [Option(Default = false, HelpText = "Save connection string and schema to local config")]
+        public bool Save { get; set; }
     }
 }

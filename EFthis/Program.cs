@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.IO;
+using System.Net.Security;
 using CommandLine;
 using EFthis.CodeGeneration;
 
@@ -18,9 +20,21 @@ namespace EFthis
 
         private static void ControlFlow(Options options)
         {
-            if (string.IsNullOrWhiteSpace(options.ConnectionString))
+            var configurationManager = new ConfigurationManager();
+            var configuration = configurationManager.Retrieve();
+
+            if (string.IsNullOrWhiteSpace(options.ConnectionString)
+                && configuration == null
+                && string.IsNullOrWhiteSpace(configuration.ConnectionString))
             {
                 Console.WriteLine("Connection string or YAML input required");
+                return;
+            }
+
+            if (options.Save)
+            {
+                configurationManager.Save(options.ConnectionString, options.Schema);
+                Console.WriteLine("Settings Saved");
                 return;
             }
 
@@ -34,6 +48,19 @@ namespace EFthis
                 Console.WriteLine("Output to directory not implemented yet");
             }
 
+            var configurationManager = new ConfigurationManager();
+            var configuration = configurationManager.Retrieve();
+
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                connectionString = configuration.ConnectionString;
+            }
+
+            if (string.IsNullOrWhiteSpace(schema))
+            {
+                connectionString = configuration.Schema;
+            }
+
             try
             {
                 var connection = new SqlConnection(connectionString);
@@ -41,7 +68,9 @@ namespace EFthis
                 var tableProperties = tableMetadata.GetProperties(table, schema);
                 var entity = EntityBuilder.BuildEntity(table, schema, tableProperties);
 
+                Console.WriteLine(Environment.NewLine);
                 Console.Write(entity);
+                Console.WriteLine(Environment.NewLine);
             }
             catch (Exception e)
             {
