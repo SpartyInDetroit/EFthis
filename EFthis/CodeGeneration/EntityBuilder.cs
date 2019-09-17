@@ -53,7 +53,6 @@ namespace EFthis.CodeGeneration
             }
 
             sb.Append("\t}");
-            sb.Append(Environment.NewLine);
 
             return sb.ToString();
         }

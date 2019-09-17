@@ -68,7 +68,9 @@ namespace EFthis
                 var tableProperties = tableMetadata.GetProperties(table, schema);
                 var entity = EntityBuilder.BuildEntity(table, schema, tableProperties);
 
+                Console.WriteLine(Environment.NewLine);
                 Console.Write(entity);
+                Console.WriteLine(Environment.NewLine);
             }
             catch (Exception e)
             {
